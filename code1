@@ -1,0 +1,42 @@
+import UIKit
+
+class NotesViewController: UIViewController {
+
+    @IBOutlet weak var notesTextView: UITextView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        notesTextView.delegate = self
+
+        let nestingArrowImage = UIImage(named: "nestingArrow")
+        let nestingArrow = UIImageView(image: nestingArrowImage)
+        nestingArrow.frame = CGRect(x: 0, y: 0, width: 16, height: 16)
+
+        notesTextView.addSubview(nestingArrow)
+        nestingArrow.isHidden = true
+    }
+
+    @IBAction func didTapNestingArrow(_ sender: Any) {
+        if notesTextView.isCollapsed {
+            notesTextView.expand()
+            nestingArrow.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
+        } else {
+            notesTextView.collapse()
+            nestingArrow.transform = CGAffineTransform.identity
+        }
+    }
+
+}
+
+extension NotesViewController: UITextViewDelegate {
+
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.isCollapsed {
+            nestingArrow.isHidden = true
+        } else {
+            nestingArrow.isHidden = false
+        }
+    }
+
+}
